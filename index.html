@@ -351,7 +351,7 @@ function endQuiz() {
   retryBtn.classList.add('hidden');
   submitBtn.classList.add('hidden');
 
-  const attempted = currentQuestion + 1; // how many questions were shown
+  const attempted = 20; // how many questions were shown
   const percentage = (score / attempted) * 100;
   let performanceMessage = "";
   if (percentage >= 90) performanceMessage = "🌟 Excellent!";
@@ -371,5 +371,6 @@ renderQuestion({ resetAttempts: true });
 </body>
 
 </html>
+
 
 
