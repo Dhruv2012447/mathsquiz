@@ -361,7 +361,7 @@ function endQuiz() {
 
   messageEl.textContent = `${performanceMessage}`;
   attemptsEl.textContent = '';
-  scoreDisplay.textContent = `Final Score: ${score} / ${attempted} (${Math.round(percentage)}%)`;
+  scoreDisplay.textContent = `Final Score: ${score} / 20 (${Math.round(percentage)}%)`;
 }
 endQuizBtn.onclick = endQuiz;
 
@@ -371,6 +371,7 @@ renderQuestion({ resetAttempts: true });
 </body>
 
 </html>
+
 
 
 
