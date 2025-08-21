@@ -213,33 +213,28 @@ button:hover {
 
 <script>
 /* -------------------- DATA -------------------- */
-const quizData = [ 
 
-  { question: "Q1. What is agriculture?", options: ["Practice of making tools", "Practice of cultivating plants and rearing animals", "Study of soil only", "Process of storing grains"], answer: 1 },
-  { question: "Q2. Why is agriculture important in India?", options: ["Provides internet services", "Plays a role in economy and employment", "Only produces clothing material", "Is the main source of electricity"], answer: 1 },
-  { question: "Q3. What is a crop?", options: ["A type of irrigation method", "A group of plants grown and harvested on a large scale", "A tool used in farming", "A method of storage"], answer: 1 },
-  { question: "Q4. Which factor does NOT affect crop choice?", options: ["Climate", "Soil type", "Water availability", "Shape of seeds"], answer: 3 },
-  { question: "Q5. Kharif crops are sown in:", options: ["October–November", "June–July", "March–April", "December–January"], answer: 1 },
-  { question: "Q6. Which of the following is a Kharif crop?", options: ["Wheat", "Gram", "Paddy", "Mustard"], answer: 2 },
-  { question: "Q7. Rabi crops are harvested in:", options: ["June–July", "March–April", "September–October", "January–February"], answer: 1 },
-  { question: "Q8. Which of the following is a Rabi crop?", options: ["Maize", "Soybean", "Wheat", "Groundnut"], answer: 2 },
-  { question: "Q9. Zaid crops are grown:", options: ["Between Rabi and Kharif seasons", "Only during heavy rains", "In winter only", "In summer only"], answer: 0 },
-  { question: "Q10. Which is an example of a Zaid crop?", options: ["Paddy", "Mustard", "Watermelon", "Wheat"], answer: 2 },
-  { question: "Q11. Which is the first step in crop production?", options: ["Irrigation", "Sowing", "Preparation of soil", "Harvesting"], answer: 2 },
-  { question: "Q12. Which tool is traditionally used for tilling soil?", options: ["Plough", "Harvester", "Seed drill", "Sickle"], answer: 0 },
-  { question: "Q13. Which tool is used for loosening soil and removing weeds?", options: ["Plough", "Hoe", "Cultivator", "Seed drill"], answer: 1 },
-  { question: "Q14. The seed drill is used for:", options: ["Ploughing soil", "Harvesting crops", "Sowing seeds uniformly", "Removing weeds"], answer: 2 },
-  { question: "Q15. Manure is made from:", options: ["Chemical substances", "Decomposed plant and animal waste", "Rocks and minerals", "Industrial waste"], answer: 1 },
-  { question: "Q16. Which gives quick results in increasing soil fertility?", options: ["Manure", "Fertilizers", "Irrigation", "Weedicides"], answer: 1 },
-  { question: "Q17. Which irrigation method sprays water like rainfall?", options: ["Drip irrigation", "Sprinkler system", "Moat", "Rahat"], answer: 1 },
-  { question: "Q18. Drip irrigation is best for:", options: ["Sandy soil", "Dry regions", "Heavy rainfall areas", "Mountain regions"], answer: 1 },
-  { question: "Q19. Unwanted plants in fields are called:", options: ["Crops", "Manure", "Weeds", "Fertilizers"], answer: 2 },
-  { question: "Q20. Which chemical is used to control weeds?", options: ["Urea", "DAP", "2,4-D", "Ammonia"], answer: 2 },
-  { question: "Q21. Harvesting is:", options: ["Cutting and gathering mature crops", "Ploughing the soil", "Removing weeds", "Storing grains"], answer: 0 },
-  { question: "Q22. Threshing means:", options: ["Separating grain from chaff", "Separating grain from harvested crop", "Storing grains in silos", "Sowing seeds"], answer: 1 },
-  { question: "Q23. Winnowing is done to:", options: ["Remove pests", "Separate grain from chaff", "Loosen soil", "Spray fertilizers"], answer: 1 },
-  { question: "Q24. Which is NOT a storage method?", options: ["Silos", "Jute bags", "Granaries", "Hoe"], answer: 3 },
-  { question: "Q25. Animal husbandry involves:", options: ["Only crop production", "Raising animals for milk, eggs, and meat", "Making fertilizers", "Producing seeds"], answer: 1 }
+const quizData = [
+  { question: "Q1. Which of these is a perfect square?", options: ["50", "81", "45", "98"], answer: 1 },
+  { question: "Q2. The square root of 121 is:", options: ["10", "11", "12", "13"], answer: 1 },
+  { question: "Q3. Which number will always have its square ending in 25?", options: ["15", "20", "25", "35"], answer: 3 },
+  { question: "Q4. The sum of first 6 odd numbers is:", options: ["25", "36", "49", "64"], answer: 2 },
+  { question: "Q5. Which of these cannot be the unit digit of a perfect square?", options: ["1", "4", "7", "9"], answer: 2 },
+  { question: "Q6. √144 = ?", options: ["10", "11", "12", "13"], answer: 2 },
+  { question: "Q7. The difference between 20² and 19² is:", options: ["37", "39", "41", "45"], answer: 2 },
+  { question: "Q8. If 25 × 25 = 625, then 250 × 250 = ?", options: ["62,500", "6250", "62,250", "6,25,000"], answer: 3 },
+  { question: "Q9. Which of these is a Pythagorean triplet?", options: ["(8, 15, 17)", "(6, 8, 10)", "(9, 12, 15)", "All of the above"], answer: 3 },
+  { question: "Q10. Square of 45 = ?", options: ["1825", "1925", "2025", "2125"], answer: 2 },
+  { question: "Q11. √2500 = ?", options: ["40", "45", "50", "55"], answer: 2 },
+  { question: "Q12. If n = 12, then n² – (n – 1)² = ?", options: ["21", "23", "24", "25"], answer: 2 },
+  { question: "Q13. Which of these numbers is NOT a perfect square?", options: ["225", "400", "625", "650"], answer: 3 },
+  { question: "Q14. The square of 99 is:", options: ["9701", "9801", "9901", "9999"], answer: 1 },
+  { question: "Q15. √0.49 = ?", options: ["0.5", "0.6", "0.7", "0.8"], answer: 2 },
+  { question: "Q16. The square of an even number is always:", options: ["Odd", "Even", "Prime", "Composite"], answer: 1 },
+  { question: "Q17. If 13² = 169, then (13 × 14) = ?", options: ["181", "182", "183", "184"], answer: 1 },
+  { question: "Q18. The sum of squares of first 3 natural numbers = ?", options: ["10", "12", "14", "15"], answer: 3 },
+  { question: "Q19. Which of the following is closest to √10?", options: ["3.0", "3.1", "3.2", "3.3"], answer: 2 },
+  { question: "Q20. If the diagonal of a square is 10 cm, its area is:", options: ["50 cm²", "60 cm²", "70 cm²", "100 cm²"], answer: 0 }
 
 ];
 
@@ -374,4 +369,5 @@ endQuizBtn.onclick = endQuiz;
 renderQuestion({ resetAttempts: true });
 </script>
 </body>
+
 </html>
