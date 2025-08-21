@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Quiz Game</title>
+ <style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #a8e6cf, #56ab2f);
+  background-size: 400% 400%;
+  animation: bgShift 15s ease infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  color: #1b5e20;
+  padding: 10px;
+}
+
+@keyframes bgShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.quiz-container {
+  background: linear-gradient(145deg, #e0f7da, #a5d6a7);
+  padding: 20px 25px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 15px 35px rgba(0, 100, 0, 0.3), 0 0 25px rgba(76, 175, 80, 0.2) inset;
+  text-align: center;
+  animation: fadein 0.8s ease-in-out;
+  border: 2px solid #00c853;
+  color: #1b5e20;
+  box-sizing: border-box;
+}
+
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
+  margin: 0 0 20px;
+  color: #1b5e20;
+  font-size: 1.4rem;
+  text-shadow: 1px 1px 3px #76ff03;
+}
+
+.option {
+  background: #d0f8ce;
+  padding: 12px;
+  margin: 8px 0;
+  cursor: pointer;
+  border-radius: 15px;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  user-select: none;
+  color: #1b5e20;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+  font-size: 0.95rem;
+}
+
+.option:hover {
+  background: #a5d6a7;
+  transform: scale(1.03) translateY(-1px);
+  border-color: #00c853;
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.5);
+}
+
+.selected {
+  background: rgba(0, 200, 83, 0.25);
+  border-color: #00c853;
+  box-shadow: 0 0 15px rgba(0, 200, 83, 0.4);
+}
+
+.correct {
+  background: rgba(0, 200, 83, 0.35) !important;
+  border-color: #00c853 !important;
+  color: #00c853;
+  box-shadow: 0 0 15px rgba(0, 200, 83, 0.7);
+}
+
+.wrong {
+  background: rgba(200, 255, 200, 0.35) !important;
+  border-color: #76ff03 !important;
+  color: #76ff03;
+  box-shadow: 0 0 12px rgba(118, 255, 3, 0.6);
+}
+
+button {
+  margin-top: 15px;
+  padding: 12px 28px;
+  cursor: pointer;
+  background: linear-gradient(45deg, #00c853, #64dd17);
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.5), 0 0 10px #00c853 inset;
+}
+
+button:hover {
+  background: linear-gradient(45deg, #76ff03, #00c853);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(76, 175, 80, 0.7), 0 0 15px #00c853 inset;
+}
+
+.hidden { display: none; }
+
+.message {
+  margin-top: 12px;
+  font-weight: bold;
+  font-size: 1.05em;
+  min-height: 1.2em;
+  color: #1b5e20;
+  text-shadow: 0 0 3px #76ff03;
+}
+
+.progress-container {
+  background: #b9f6ca;
+  border-radius: 25px;
+  height: 12px;
+  margin-bottom: 15px;
+  overflow: hidden;
+  box-shadow: inset 0 0 8px rgba(76, 175, 80, 0.3);
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #00c853, #76ff03);
+  transition: width 0.5s ease;
+  border-radius: 25px;
+}
+
+.score {
+  font-size: 13px;
+  color: #00c853;
+  font-weight: bold;
+  margin-bottom: 8px;
+  text-shadow: 0 0 3px #76ff03;
+}
+
+.attempts {
+  font-size: 11px;
+  color: #1b5e20;
+  margin-top: 3px;
+  min-height: 1em;
+  text-shadow: 0 0 2px #76ff03;
+}
+
+/* Floating End Quiz button */
+#endQuizBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 14px 26px;
+  background: linear-gradient(45deg, #ff1744, #d50000);
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(255, 23, 68, 0.5);
+  transition: all 0.3s ease;
+  z-index: 999;
+}
+
+#endQuizBtn:hover {
+  background: linear-gradient(45deg, #d50000, #ff1744);
+  transform: scale(1.08);
+}
+
+/* -------------------- MEDIA QUERIES -------------------- */
+@media (max-width: 600px) {
+  .quiz-container {
+    padding: 15px 20px;
+  }
+  h2 { font-size: 1.2rem; }
+  .option { font-size: 0.9rem; padding: 10px; }
+  button { font-size: 0.95rem; padding: 10px 22px; }
+}
+</style>
+</head>
+<body>
+
+<div class="quiz-container" id="quizBox">
+  <div class="score" id="scoreDisplay">Score: 0</div>
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <h2 id="question">Question text</h2>
+  <div id="options"></div>
+
+  <button id="submitBtn">Submit</button>
+  <button id="retryBtn" class="hidden">Retry</button>
+  <button id="nextBtn" class="hidden">Next</button>
+
+  <div id="message" class="message"></div>
+  <div id="attempts" class="attempts"></div>
+</div>
+
+<!-- Floating End Quiz Button -->
+<button id="endQuizBtn">End Quiz</button>
+
+<script>
+/* -------------------- DATA -------------------- */
+const quizData = [ 
+
+  { question: "Q1. What is agriculture?", options: ["Practice of making tools", "Practice of cultivating plants and rearing animals", "Study of soil only", "Process of storing grains"], answer: 1 },
+  { question: "Q2. Why is agriculture important in India?", options: ["Provides internet services", "Plays a role in economy and employment", "Only produces clothing material", "Is the main source of electricity"], answer: 1 },
+  { question: "Q3. What is a crop?", options: ["A type of irrigation method", "A group of plants grown and harvested on a large scale", "A tool used in farming", "A method of storage"], answer: 1 },
+  { question: "Q4. Which factor does NOT affect crop choice?", options: ["Climate", "Soil type", "Water availability", "Shape of seeds"], answer: 3 },
+  { question: "Q5. Kharif crops are sown in:", options: ["October–November", "June–July", "March–April", "December–January"], answer: 1 },
+  { question: "Q6. Which of the following is a Kharif crop?", options: ["Wheat", "Gram", "Paddy", "Mustard"], answer: 2 },
+  { question: "Q7. Rabi crops are harvested in:", options: ["June–July", "March–April", "September–October", "January–February"], answer: 1 },
+  { question: "Q8. Which of the following is a Rabi crop?", options: ["Maize", "Soybean", "Wheat", "Groundnut"], answer: 2 },
+  { question: "Q9. Zaid crops are grown:", options: ["Between Rabi and Kharif seasons", "Only during heavy rains", "In winter only", "In summer only"], answer: 0 },
+  { question: "Q10. Which is an example of a Zaid crop?", options: ["Paddy", "Mustard", "Watermelon", "Wheat"], answer: 2 },
+  { question: "Q11. Which is the first step in crop production?", options: ["Irrigation", "Sowing", "Preparation of soil", "Harvesting"], answer: 2 },
+  { question: "Q12. Which tool is traditionally used for tilling soil?", options: ["Plough", "Harvester", "Seed drill", "Sickle"], answer: 0 },
+  { question: "Q13. Which tool is used for loosening soil and removing weeds?", options: ["Plough", "Hoe", "Cultivator", "Seed drill"], answer: 1 },
+  { question: "Q14. The seed drill is used for:", options: ["Ploughing soil", "Harvesting crops", "Sowing seeds uniformly", "Removing weeds"], answer: 2 },
+  { question: "Q15. Manure is made from:", options: ["Chemical substances", "Decomposed plant and animal waste", "Rocks and minerals", "Industrial waste"], answer: 1 },
+  { question: "Q16. Which gives quick results in increasing soil fertility?", options: ["Manure", "Fertilizers", "Irrigation", "Weedicides"], answer: 1 },
+  { question: "Q17. Which irrigation method sprays water like rainfall?", options: ["Drip irrigation", "Sprinkler system", "Moat", "Rahat"], answer: 1 },
+  { question: "Q18. Drip irrigation is best for:", options: ["Sandy soil", "Dry regions", "Heavy rainfall areas", "Mountain regions"], answer: 1 },
+  { question: "Q19. Unwanted plants in fields are called:", options: ["Crops", "Manure", "Weeds", "Fertilizers"], answer: 2 },
+  { question: "Q20. Which chemical is used to control weeds?", options: ["Urea", "DAP", "2,4-D", "Ammonia"], answer: 2 },
+  { question: "Q21. Harvesting is:", options: ["Cutting and gathering mature crops", "Ploughing the soil", "Removing weeds", "Storing grains"], answer: 0 },
+  { question: "Q22. Threshing means:", options: ["Separating grain from chaff", "Separating grain from harvested crop", "Storing grains in silos", "Sowing seeds"], answer: 1 },
+  { question: "Q23. Winnowing is done to:", options: ["Remove pests", "Separate grain from chaff", "Loosen soil", "Spray fertilizers"], answer: 1 },
+  { question: "Q24. Which is NOT a storage method?", options: ["Silos", "Jute bags", "Granaries", "Hoe"], answer: 3 },
+  { question: "Q25. Animal husbandry involves:", options: ["Only crop production", "Raising animals for milk, eggs, and meat", "Making fertilizers", "Producing seeds"], answer: 1 }
+
+];
+
+/* -------------------- STATE -------------------- */
+let currentQuestion = 0;
+let selectedOption = null;
+let score = 0;
+let wrongAttemptsForCurrent = 0;
+const MAX_ATTEMPTS = 3;
+
+const questionEl = document.getElementById('question');
+const optionsEl = document.getElementById('options');
+const submitBtn = document.getElementById('submitBtn');
+const retryBtn = document.getElementById('retryBtn');
+const nextBtn = document.getElementById('nextBtn');
+const messageEl = document.getElementById('message');
+const attemptsEl = document.getElementById('attempts');
+const progressBar = document.getElementById('progressBar');
+const scoreDisplay = document.getElementById('scoreDisplay');
+const endQuizBtn = document.getElementById('endQuizBtn');
+
+/* -------------------- SOUNDS -------------------- */
+const correctSound = new Audio("correct-6033.mp3");
+const wrongSound   = new Audio("error-04-199275.mp3");
+correctSound.preload = "auto";
+wrongSound.preload = "auto";
+
+/* -------------------- RENDER -------------------- */
+function renderQuestion({ resetAttempts = false } = {}) {
+  const q = quizData[currentQuestion];
+  if (resetAttempts) wrongAttemptsForCurrent = 0;
+  questionEl.textContent = q.question;
+  optionsEl.innerHTML = '';
+  messageEl.textContent = '';
+  attemptsEl.textContent = wrongAttemptsForCurrent > 0
+    ? `Attempts used: ${wrongAttemptsForCurrent}/${MAX_ATTEMPTS}`
+    : '';
+  submitBtn.classList.remove('hidden');
+  retryBtn.classList.add('hidden');
+  nextBtn.classList.add('hidden');
+
+  q.options.forEach((option, index) => {
+    const div = document.createElement('div');
+    div.textContent = option;
+    div.classList.add('option');
+    div.onclick = () => {
+      if (submitBtn.classList.contains('hidden')) return;
+      document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+      div.classList.add('selected');
+      selectedOption = index;
+    };
+    optionsEl.appendChild(div);
+  });
+
+  updateProgress();
+}
+function updateProgress() {
+  const progress = (currentQuestion / quizData.length) * 100;
+  progressBar.style.width = progress + "%";
+}
+function lockOptions() { document.querySelectorAll('.option').forEach(o => o.style.pointerEvents = 'none'); }
+function unlockOptions() { document.querySelectorAll('.option').forEach(o => o.style.pointerEvents = 'auto'); }
+
+/* -------------------- SUBMIT -------------------- */
+submitBtn.onclick = () => {
+  if (selectedOption === null) { alert("Please select an option!"); return; }
+  const correctAnswer = quizData[currentQuestion].answer;
+  const optionDivs = document.querySelectorAll('.option');
+  lockOptions();
+  if (selectedOption === correctAnswer) {
+    messageEl.textContent = "✅ Correct!";
+    score++;
+    scoreDisplay.textContent = `Score: ${score}`;
+    optionDivs[selectedOption].classList.add('correct');
+    correctSound.play();
+    submitBtn.classList.add('hidden');
+    retryBtn.classList.add('hidden');
+    nextBtn.classList.remove('hidden');
+  } else {
+    wrongAttemptsForCurrent++;
+    wrongSound.play();
+    optionDivs[selectedOption].classList.add('wrong');
+    if (wrongAttemptsForCurrent >= MAX_ATTEMPTS) {
+      messageEl.textContent = "❌ Out of attempts.";
+      optionDivs[correctAnswer].classList.add('correct');
+      submitBtn.classList.add('hidden');
+      retryBtn.classList.add('hidden');
+      nextBtn.classList.remove('hidden');
+      attemptsEl.textContent = `Attempts used: ${wrongAttemptsForCurrent}/${MAX_ATTEMPTS}`;
+    } else {
+      messageEl.textContent = `❌ Incorrect! Try again (${wrongAttemptsForCurrent}/${MAX_ATTEMPTS})`;
+      attemptsEl.textContent = `Attempts used: ${wrongAttemptsForCurrent}/${MAX_ATTEMPTS}`;
+      submitBtn.classList.add('hidden');
+      retryBtn.classList.remove('hidden');
+      nextBtn.classList.add('hidden');
+    }
+  }
+};
+retryBtn.onclick = () => { selectedOption = null; unlockOptions(); renderQuestion({ resetAttempts: false }); };
+nextBtn.onclick = () => {
+  currentQuestion++;
+  selectedOption = null;
+  if (currentQuestion < quizData.length) {
+    renderQuestion({ resetAttempts: true }); unlockOptions();
+  } else { endQuiz(); }
+};
+
+/* -------------------- END QUIZ -------------------- */
+function endQuiz() {
+  progressBar.style.width = "100%";
+  questionEl.textContent = "🎉 Quiz Ended!";
+  optionsEl.innerHTML = "";
+  nextBtn.classList.add('hidden');
+  retryBtn.classList.add('hidden');
+  submitBtn.classList.add('hidden');
+
+  const attempted = currentQuestion + 1; // how many questions were shown
+  const percentage = (score / attempted) * 100;
+  let performanceMessage = "";
+  if (percentage >= 90) performanceMessage = "🌟 Excellent!";
+  else if (percentage >= 70) performanceMessage = "👍 Good Job!";
+  else if (percentage >= 50) performanceMessage = "🙂 Average!";
+  else performanceMessage = "🔄 Please try again!";
+
+  messageEl.textContent = `${performanceMessage}`;
+  attemptsEl.textContent = '';
+  scoreDisplay.textContent = `Final Score: ${score} / ${attempted} (${Math.round(percentage)}%)`;
+}
+endQuizBtn.onclick = endQuiz;
+
+/* -------------------- INIT -------------------- */
+renderQuestion({ resetAttempts: true });
+</script>
+</body>
+</html>
