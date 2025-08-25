@@ -241,6 +241,29 @@ const quizData = [
   { question: "Q19. Which of the following is closest to √10?", options: ["3.0", "3.1", "3.2", "3.3"], answer: 2 },
   { question: "Q20. If the diagonal of a square is 10 cm, its area is:", options: ["50 cm²", "60 cm²", "70 cm²", "100 cm²"], answer: 0 }
 ];
+// Add these new drag & drop type questions
+quizData.push(
+  {
+    type: "match",
+    question: "Q21. Match the perfect squares with their square roots:",
+    pairs: [
+      { left: "49", right: "7" },
+      { left: "81", right: "9" },
+      { left: "144", right: "12" },
+      { left: "225", right: "15" }
+    ]
+  },
+  {
+    type: "match",
+    question: "Q22. Match the squares with their numbers:",
+    pairs: [
+      { left: "20²", right: "400" },
+      { left: "25²", right: "625" },
+      { left: "30²", right: "900" },
+      { left: "35²", right: "1225" }
+    ]
+  }
+);
 
 let currentQuestion = 0;
 let selectedOption = null;
@@ -261,9 +284,70 @@ const endQuizBtn = document.getElementById('endQuizBtn');
 
 const correctSound = new Audio("correct-6033.mp3");
 const wrongSound   = new Audio("error-04-199275.mp3");
+// === Drag & Drop Helpers ===
+function renderMatchQuestion(q) {
+  optionsEl.innerHTML = "";
+  messageEl.textContent = "";
+  attemptsEl.textContent = "";
+
+  const leftCol = document.createElement("div");
+  leftCol.style.float = "left";
+  leftCol.style.width = "45%";
+  const rightCol = document.createElement("div");
+  rightCol.style.float = "right";
+  rightCol.style.width = "45%";
+
+  // shuffle right side values
+  const shuffledRight = q.pairs.map(p => p.right).sort(() => Math.random() - 0.5);
+
+  q.pairs.forEach((pair, i) => {
+    const leftDiv = document.createElement("div");
+    leftDiv.textContent = pair.left;
+    leftDiv.classList.add("option");
+    leftDiv.dataset.answer = pair.right;
+    leftCol.appendChild(leftDiv);
+  });
+
+  shuffledRight.forEach(val => {
+    const rightDiv = document.createElement("div");
+    rightDiv.textContent = val;
+    rightDiv.classList.add("option");
+    rightDiv.draggable = true;
+    rightDiv.ondragstart = e => e.dataTransfer.setData("text", val);
+    rightCol.appendChild(rightDiv);
+  });
+
+  optionsEl.appendChild(leftCol);
+  optionsEl.appendChild(rightCol);
+
+  // allow drop
+  optionsEl.querySelectorAll("[data-answer]").forEach(left => {
+    left.ondragover = e => e.preventDefault();
+    left.ondrop = e => {
+      const draggedVal = e.dataTransfer.getData("text");
+      if (draggedVal === left.dataset.answer) {
+        left.classList.add("correct");
+        left.textContent = `${left.textContent} = ${draggedVal}`;
+        score++;
+        scoreDisplay.textContent = `Score: ${score}`;
+      } else {
+        left.classList.add("wrong");
+      }
+    };
+  });
+}
 
 function renderQuestion({ resetAttempts = false } = {}) {
   const q = quizData[currentQuestion];
+   if (q.type === "match") {
+    questionEl.textContent = q.question;
+    submitBtn.classList.add("hidden");
+    retryBtn.classList.add("hidden");
+    nextBtn.classList.remove("hidden");
+    renderMatchQuestion(q);
+    updateProgress();
+    return;
+  }
   if (resetAttempts) wrongAttemptsForCurrent = 0;
   questionEl.textContent = q.question;
   optionsEl.innerHTML = '';
@@ -359,3 +443,4 @@ renderQuestion({ resetAttempts: true });
 </script>
 </body>
 </html>
+
